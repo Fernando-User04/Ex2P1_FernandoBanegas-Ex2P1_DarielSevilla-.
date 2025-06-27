@@ -15,6 +15,7 @@ public class Ex2P1_FernandoBanegasEx2P1_DarielSevilla {
     static ArrayList<pokemon> poke = new ArrayList();
     static ArrayList<pokemon> encontrados = new ArrayList();
     static trainer tra = new trainer();
+    static ArrayList<pokemon> global = new ArrayList();
     
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);
@@ -135,6 +136,7 @@ public class Ex2P1_FernandoBanegasEx2P1_DarielSevilla {
                     pokemon.setNivel(nivel);
                     System.out.println("");
                     poke.add(pokemon);
+                    global.add(pokemon);
                     System.out.println("El pokemon : ");
                     System.out.println("------------");
                     System.out.println(pokemon);
@@ -144,26 +146,143 @@ public class Ex2P1_FernandoBanegasEx2P1_DarielSevilla {
                     break;
                 case 2:
                     System.out.println("----Atrapar Pokemon----");
-                    if (poke.size()>0) {
-                        
-                        
+                    if (poke.size()>0&&tra.getPokeballs()>0) {
+                        int random = r.nextInt(poke.size());
+                        System.out.println("");
+                        System.out.println("Un pokemon salvaje ha salido de la grama");
+                        System.out.println("Es un "+poke.get(random).getNombre()+" salvaje");
+                        boolean atrapado = false;
+                        double chance = poke.get(random).getCatchRate();
+                        do {
+                            double tiro = r.nextDouble(100)+1;
+                            if (tiro<=chance) {
+                                System.out.println("Pokebolas : "+tra.getPokeballs());
+                                System.out.println("Se puedo atrapar al "+poke.get(random).getNombre()+" salvaje");
+                                encontrados.add(poke.get(random));
+                                poke.remove(random);
+                                atrapado = true;
+                            }else{
+                                int pokebo = tra.getPokeballs()-1;
+                                tra.setPokeballs(pokebo);
+                                System.out.println("Pokebolas : "+tra.getPokeballs());
+                                int opc = 0;
+                                do {
+                                    System.out.println("El "+poke.get(random).getNombre()+" salvaje ha escapado"
+                                        + ", desea intentar otra vez? (1 - Si, 2 - No)");
+                                    System.out.println("Opcion : ");
+                                    opc = entrada.nextInt();
+                                    switch(opc){
+                                        case 1:
+                                            atrapado = false;
+                                            break;
+                                        case 2:
+                                            atrapado = true;
+                                            break;
+                                        default:
+                                            System.out.println("Opcion no valida, intente nuevamente.");
+                                            break;
+                                    }
+                                } while (opc<1||opc>2);
+                            }
+                        } while (!atrapado);
                         
                     }else{
-                        System.out.println("Deben de haber pokemones en el mundo para poder atraparlos. (crea un pokemon-Opcion1) ");
+                        if (poke.size()==0) {
+                            System.out.println("Deben de haber pokemones en el mundo para poder atraparlos. (crea un pokemon-Opcion1) ");
+                        }
+                        if (tra.getPokeballs()==0) {
+                            System.out.println("Debes de tener pokebolas para poder atrapar pokemones");
+                        }
                     }
                     System.out.println("");
                     break;
                 case 3:
                     System.out.println("----Pokedex----");
+                    System.out.println("");
+                    int opci = 0;
+                    do {
+                        System.out.println("Seleccione opcion de listado : ");
+                        System.out.println("1) Por tipo\n2) Pokemon atrapados\n3) Todos");
+                        System.out.print("Opcion : ");
+                        opci = entrada.nextInt();
+                        System.out.println("");
+                        switch(opci){
+                            case 1:
+                                int tipopoke = 0;
+                                String type = "";
+                                do {
+                                    System.out.println("Ingrese tipo de pokemon : ");
+                                    System.out.println("1) fuego\n2) agua\n3) planta");
+                                    System.out.print("Tipo : ");
+                                    tipopoke = entrada.nextInt();
+                                    switch(tipopoke){
+                                        case 1:
+                                            type = "fuego";
+                                            break;
+                                        case 2:
+                                            type = "agua";
+                                            break;
+                                        case 3:
+                                            type = "planta";
+                                            break;
+                                        default:
+                                            System.out.println("Tipo no valido, intente nuevamente.");
+                                            break;
+                                    }
+                                } while (tipopoke<1||tipopoke>3);
+                                System.out.println("");
+                                for (int i = 0; i < global.size(); i++) {
+                                    if (type.equalsIgnoreCase(global.get(i).getTipo())) {
+                                        System.out.println("---------------");
+                                        System.out.println(global.get(i));
+                                        System.out.println("---------------");
+                                    }
+                                }
+                                System.out.println("");
+                                break;
+                            case 2:
+                                for (int i = 0; i < encontrados.size(); i++) {
+                                    System.out.println("---------------");
+                                    System.out.println(encontrados.get(i));
+                                    System.out.println("---------------");
+                                }
+                                System.out.println("");
+                                break;
+                            case 3:
+                                for (int i = 0; i < global.size(); i++) {
+                                    System.out.println("---------------");
+                                    System.out.println(global.get(i));
+                                    System.out.println("---------------");
+                                }
+                                System.out.println("");
+                                break;
+                            default:
+                                System.out.println("Opcion no valida, intente nuevamente.");
+                        }
+                    } while (opci<1||opci>3);
                     break;
                 case 4:
                     System.out.println("----Entrenar Pokemon----");
                     break;
                 case 5:
                     System.out.println("----Comprar Pokebolas----");
+                    System.out.println("");
+                    System.out.println("Cuantas pokebolas desea comprar? (Ingrese un numero) : ");
+                    int cantidad = entrada.nextInt();
+                    int precio = cantidad*100;
+                    if (precio<=tra.getDinero()) {
+                        System.out.println("Ha comprado "+cantidad+" pokebolas !!!");
+                        System.out.println(tra);
+                    }else{
+                        System.out.println("No tienes suficiente dinero :( (mendigo pobre) ");
+                    }
+                    System.out.println("");
                     break;
                 case 6:
                     System.out.println("----Informacion de entrenador----");
+                    System.out.println("");
+                    System.out.println(tra);
+                    System.out.println("");
                     break;
                 case 7:
                     System.out.println("Saliendo del juego....");
