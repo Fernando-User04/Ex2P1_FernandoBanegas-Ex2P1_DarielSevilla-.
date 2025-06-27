@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package ex2p1_fernandobanegas.ex2p1_darielsevilla;
+import static ex2p1_fernandobanegas.ex2p1_darielsevilla.metodos.combate;
 import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Ex2P1_FernandoBanegasEx2P1_DarielSevilla {
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);
         Random r = new Random();
+        metodos met = new metodos();
         System.out.println("----P O K E M O N----");
         System.out.println("");
         System.out.println("Ingrese nombre de entrenador : ");
@@ -263,6 +265,22 @@ public class Ex2P1_FernandoBanegasEx2P1_DarielSevilla {
                     break;
                 case 4:
                     System.out.println("----Entrenar Pokemon----");
+                    System.out.println("");
+                    if (encontrados.isEmpty()) {
+                        System.out.println("No tienes Pokémon atrapados para entrenar.");
+                        return;
+                    }
+                    System.out.println("Tus Pokémon atrapados:");
+                    for (int i = 0; i < encontrados.size(); i++)
+                        System.out.println(i + ". " + encontrados.get(i).getNombre());
+                    System.out.print("Elige uno para entrenar: ");
+                    int elegido = entrada.nextInt();
+                    pokemon aliado = encontrados.get(elegido);
+                    int ra = r.nextInt(global.size());
+                    pokemon enemigo = global.get(ra);
+                    combate(aliado, enemigo, true);
+
+                    
                     break;
                 case 5:
                     System.out.println("----Comprar Pokebolas----");
@@ -294,9 +312,6 @@ public class Ex2P1_FernandoBanegasEx2P1_DarielSevilla {
                     break;
             } 
         } while (opcion!=7);
-       
-        
-        
     }
     
 }

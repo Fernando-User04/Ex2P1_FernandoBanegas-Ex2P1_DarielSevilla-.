@@ -15,14 +15,14 @@ public class pokemon {
     private double ataque;
     private double defensa;
     private double catchRate;
-    private int vida;
+    private double vida;
     
     
     public void pokemon(){
         
     }
     
-    public void pokemon(String nombre, String tipo, int nivel, double ataque, double defensa, double catchRate, int vida){
+    public void pokemon(String nombre, String tipo, int nivel, double ataque, double defensa, double catchRate, double vida){
         this.nombre = nombre;
         this.tipo = tipo;
         this.nivel = nivel;
@@ -81,11 +81,11 @@ public class pokemon {
         this.catchRate = catchRate;
     }
 
-    public int getVida() {
+    public double getVida() {
         return vida;
     }
 
-    public void setVida(int vida) {
+    public void setVida(double vida) {
         this.vida = vida;
     }
     
